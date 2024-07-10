@@ -1,18 +1,22 @@
 #! /bin/zsh
+
+# Declare a helper
+helper=yay
+
 # List of apps installed with pacman
 declare -a pacman_apps
 
-# List of apps installed with yay
-declare -a yay_apps
+# List of apps installed with helper
+declare -a helper_apps
 
 # Install with the mothod needed
 for item in $@; do
 # Check if the apps are available with pacman
 target=$(pacman -Ss $item)
 
-# Add the apps to the yay_apps list or to the pacman_apps list
+# Add the apps to the helper_apps list or to the pacman_apps list
 if [[ -z $target ]]; then
-    yay_apps+=($item)
+    helper_apps+=($item)
 else
     pacman_apps+=($item)
 fi
@@ -23,8 +27,8 @@ if [[ ${#pacman_apps[@]} != 0 ]]; then
     sudo pacman -S ${pacman_apps[@]}
 fi
 
-# Install yay apps
-if [[ ${#yay_apps[@]} != 0 ]];then
-    yay -S ${yay_apps[@]}
+# Install helper apps
+if [[ ${#helper_apps[@]} != 0 ]];then
+    $helper -S ${helper_apps[@]}
 fi
 
